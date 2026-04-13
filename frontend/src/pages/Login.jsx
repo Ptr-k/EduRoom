@@ -23,7 +23,7 @@ function Login() {
       localStorage.setItem('token', response.token)
       localStorage.setItem('user', JSON.stringify(response.usuario))
 
-      // se redirige al panel done aún no he creado
+      // se redirige al panel de selección de centros
       navigate('/dashboard')
     } catch (err) {
       setError(err.response?.data?.message || 'Error al iniciar sesión. Verifica tus credenciales.')
