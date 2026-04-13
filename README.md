@@ -20,3 +20,7 @@ El proyecto está dividido en dos partes principales: un backend basado en API R
 - **Spring Data JPA:** Manejo de persistencia de datos.
 - **MariaDB:** Base de datos relacional.
 - **ZXing:** Generación de códigos QR.
+- 
+### Frontend
+- **Vite + React**
+- **Javascript**
