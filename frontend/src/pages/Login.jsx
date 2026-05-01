@@ -36,7 +36,7 @@ function Login() {
     <div className="login-container">
       <div className="login-box">
         <h1>EduRoom</h1>
-        <p className="subtitle">Sistema de Gestión de Aulas y Eventos</p>
+        <p className="subtitle">Sistema de Gestión de Aulas y Actividades Extraexcolares</p>
 
           {/* FORMULARIO DE INICIO DE SESIÓN */}
         <form onSubmit={handleSubmit}>
