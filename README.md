@@ -32,7 +32,3 @@ El proyecto sigue una arquitectura de cliente-servidor (Frontend/Backend) comuni
 - **Vanilla CSS:** Uso avanzado de variables, CSS Modules, diseño responsivo, Flexbox/Grid y _glassmorphism_ sin frameworks adicionales.
 - **Axios:** Cliente HTTP para la comunicación con el Backend.
 - **React Router:** Para navegación SPA (Single Page Application) sin recargas.
-
----
-
-_Para consultar los detalles completos de despliegue, la estructura de base de datos, arquitectura y todos los módulos desarrollados, consulta el archivo [Documentación Operativa](DOCUMENTACION_OPERATIVA.md)._
