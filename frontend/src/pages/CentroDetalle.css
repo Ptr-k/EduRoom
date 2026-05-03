@@ -1,0 +1,153 @@
+.centro-container {
+  min-height: 100vh;
+  background: #0f0f1a;
+  color: #e0e0e0;
+  padding: 24px;
+}
+
+.centro-back {
+  margin-bottom: 16px;
+}
+
+.volver-link {
+  background: transparent;
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  color: #667eea;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 14px;
+  transition: all 0.3s ease;
+}
+
+.volver-link:hover {
+  background: rgba(102, 126, 234, 0.1);
+  border-color: #667eea;
+  transform: translateY(-1px);
+}
+
+.centro-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.centro-title {
+  font-size: 28px;
+  margin: 0;
+  color: #fff;
+}
+
+.centro-subtitle {
+  color: #888;
+  margin: 0;
+}
+
+.centro-actions {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.centro-btn {
+  padding: 10px 14px;
+  border: 1px solid rgba(102, 126, 234, 0.25);
+  border-radius: 10px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.centro-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(118, 75, 162, 0.25);
+}
+
+.centro-btn.secondary {
+  background: linear-gradient(135deg, #10b981, #0ea5e9);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.centro-btn.tertiary {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  border-color: rgba(139, 92, 246, 0.35);
+}
+
+.centro-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.centro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.centro-card {
+  background: rgba(20, 20, 30, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(102, 126, 234, 0.15);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.centro-card h3 {
+  margin: 0 0 8px 0;
+  color: #fff;
+}
+
+.centro-field {
+  margin: 8px 0;
+}
+
+.centro-field label {
+  font-weight: 600;
+}
+
+.centro-select,
+.centro-input {
+  margin-left: 8px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.25);
+  color: #e0e0e0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+}
+
+.centro-input::placeholder {
+  color: #666;
+}
+
+.reserva-list {
+  margin-top: 10px;
+  padding-left: 18px;
+}
+
+.reserva-empty {
+  color: #a0a0b0;
+}
+
+.mensaje-error {
+  background-color: rgba(255, 107, 107, 0.08);
+  color: #ff8787;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  border-radius: 10px;
+  margin: 8px 0;
+}
+
+.mensaje-ok {
+  background-color: rgba(16, 185, 129, 0.08);
+  color: #34d399;
+  padding: 10px 12px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 10px;
+  margin: 8px 0;
+}

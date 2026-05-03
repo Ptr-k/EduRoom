@@ -55,8 +55,7 @@ function Dashboard() {
   }
 
   const handleCentroClick = (centroId) => {
-    // TODO: navegar a la vista del centro
-    console.log('Centro seleccionado:', centroId)
+    navigate(`/centros/${centroId}`)
   }
 
   // formatear hora de LocalTime (viene como "08:15" o array [8,15])
@@ -149,15 +148,6 @@ function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="centro-detail">
-                    <span className="detail-icon">📚</span>
-                    <div>
-                      <div className="detail-label">Aulas</div>
-                      <div className="detail-value">
-                        {centro.aulas?.length || 0} aulas disponibles
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 <div className="centro-card-footer">

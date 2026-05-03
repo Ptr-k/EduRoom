@@ -4,13 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Entity
-@Table(name = "aulas")
+@Table(name = "actividades")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-public class Aula {
+public class Actividad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +21,22 @@ public class Aula {
     @Column(nullable = false)
     private String nombre;
 
-    private Integer capacidad;
+    @Column(length = 1000)
+    private String descripcion;
+
+    private LocalDate fecha; // opcional
+
+    private LocalTime horaInicio; // opcional
+
+    private LocalTime horaFin; // opcional
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_centro", nullable = false)
     @JsonIgnoreProperties({"usuarios", "aulas"})
     private Centro centro;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_creador")
+    @JsonIgnoreProperties({"passwordHash", "centro"})
+    private Usuario creador;
 }

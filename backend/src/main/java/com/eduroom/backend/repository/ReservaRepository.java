@@ -16,4 +16,7 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     // método para obtener reservas en espera ordenadas por fecha de creación
     // para la cola de espera
     List<Reserva> findByEstadoOrderByCreatedAtAsc(Reserva.EstadoReserva estado);
+
+    // listar todas las reservas de un centro (a través de su aula)
+    List<Reserva> findByAula_Centro_Id(Long centroId);
 }
