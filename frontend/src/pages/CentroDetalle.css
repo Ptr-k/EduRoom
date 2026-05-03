@@ -1,15 +1,52 @@
+/* ===== LAYOUT BASE ===== */
 .centro-container {
   min-height: 100vh;
   background: #0f0f1a;
   color: #e0e0e0;
-  padding: 24px;
 }
 
-.centro-back {
-  margin-bottom: 16px;
+/* ===== NAVBAR (mismo estilo que Dashboard) ===== */
+.centro-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background: rgba(15, 15, 26, 0.95);
+  border-bottom: 1px solid rgba(102, 126, 234, 0.15);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.centro-navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.centro-navbar-brand h2 {
+  font-size: 22px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.brand-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #667eea;
+  box-shadow: 0 0 8px rgba(102, 126, 234, 0.6);
 }
 
 .volver-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: transparent;
   border: 1px solid rgba(102, 126, 234, 0.3);
   color: #667eea;
@@ -17,137 +54,365 @@
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  padding: 8px 14px;
-  transition: all 0.3s ease;
+  padding: 8px 16px;
+  transition: all 0.25s ease;
+  font-family: inherit;
 }
 
 .volver-link:hover {
   background: rgba(102, 126, 234, 0.1);
   border-color: #667eea;
-  transform: translateY(-1px);
+  transform: translateX(-2px);
 }
 
+/* ===== MAIN CONTENT ===== */
+.centro-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 32px;
+}
+
+/* ===== HEADER ===== */
 .centro-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 32px;
 }
 
 .centro-title {
-  font-size: 28px;
-  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
   color: #fff;
+  margin: 0 0 6px 0;
 }
 
 .centro-subtitle {
+  font-size: 14px;
   color: #888;
   margin: 0;
 }
 
+/* ===== ACTION BUTTONS ===== */
 .centro-actions {
   display: flex;
   gap: 12px;
-  margin: 16px 0;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
 }
 
 .centro-btn {
-  padding: 10px 14px;
-  border: 1px solid rgba(102, 126, 234, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: none;
   border-radius: 10px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #fff;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  transition: transform 0.1s ease, opacity 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+  font-family: inherit;
+  text-decoration: none;
 }
 
 .centro-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 28px rgba(118, 75, 162, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
 }
 
 .centro-btn.secondary {
   background: linear-gradient(135deg, #10b981, #0ea5e9);
-  border-color: rgba(16, 185, 129, 0.35);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+}
+
+.centro-btn.secondary:hover {
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35);
 }
 
 .centro-btn.tertiary {
   background: linear-gradient(135deg, #8b5cf6, #6366f1);
-  border-color: rgba(139, 92, 246, 0.35);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+}
+
+.centro-btn.tertiary:hover {
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.35);
 }
 
 .centro-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
 }
 
+/* ===== GRID ===== */
 .centro-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
 }
 
+/* ===== CARDS ===== */
 .centro-card {
-  background: rgba(20, 20, 30, 0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(102, 126, 234, 0.15);
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  background: rgba(25, 25, 45, 0.8);
+  border: 1px solid rgba(102, 126, 234, 0.12);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  transition: border-color 0.3s ease;
+}
+
+.centro-card:hover {
+  border-color: rgba(102, 126, 234, 0.25);
 }
 
 .centro-card h3 {
-  margin: 0 0 8px 0;
-  color: #fff;
-}
-
-.centro-field {
-  margin: 8px 0;
-}
-
-.centro-field label {
+  font-size: 16px;
   font-weight: 600;
+  color: #fff;
+  margin: 0 0 20px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ===== FORM FIELDS ===== */
+.centro-field {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.centro-field label,
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #c0c0d0;
+  margin-bottom: 6px;
 }
 
 .centro-select,
 .centro-input {
-  margin-left: 8px;
-  padding: 10px 12px;
+  width: 100%;
+  padding: 11px 14px;
   background: rgba(0, 0, 0, 0.25);
   color: #e0e0e0;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.centro-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23667eea' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.centro-select:focus,
+.centro-input:focus {
+  border-color: #667eea;
+  background: rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.18);
 }
 
 .centro-input::placeholder {
-  color: #666;
+  color: #555;
 }
 
+/* ===== RESERVAS LIST ===== */
 .reserva-list {
-  margin-top: 10px;
-  padding-left: 18px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reserva-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(102, 126, 234, 0.05);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  border-radius: 10px;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.reserva-item .hora {
+  font-weight: 600;
+  color: #a0b4ff;
+  white-space: nowrap;
+}
+
+.reserva-item .sep {
+  color: #444;
+}
+
+.reserva-item .asignatura {
+  flex: 1;
+  font-weight: 500;
+  color: #e0e0e0;
+}
+
+.reserva-item .estado {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  font-weight: 500;
+  text-transform: capitalize;
 }
 
 .reserva-empty {
-  color: #a0a0b0;
+  font-size: 13px;
+  color: #666;
+  text-align: center;
+  padding: 24px 0;
 }
 
+/* ===== FEEDBACK MESSAGES ===== */
 .mensaje-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   background-color: rgba(255, 107, 107, 0.08);
   color: #ff8787;
-  padding: 10px 12px;
+  padding: 12px 16px;
   border: 1px solid rgba(255, 107, 107, 0.2);
   border-radius: 10px;
-  margin: 8px 0;
+  margin: 12px 0;
+  font-size: 13px;
 }
 
 .mensaje-ok {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   background-color: rgba(16, 185, 129, 0.08);
   color: #34d399;
-  padding: 10px 12px;
+  padding: 12px 16px;
   border: 1px solid rgba(16, 185, 129, 0.2);
   border-radius: 10px;
-  margin: 8px 0;
+  margin: 12px 0;
+  font-size: 13px;
+}
+
+/* ===== LOADING / ERROR STATES ===== */
+.state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(102, 126, 234, 0.15);
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.state-text {
+  font-size: 14px;
+  color: #888;
+}
+
+/* ===== FORM PAGE (ReservaNueva / ActividadNueva) ===== */
+.form-page-container {
+  min-height: 100vh;
+  background: #0f0f1a;
+  color: #e0e0e0;
+}
+
+.form-page-content {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 32px;
+}
+
+.form-page-header {
+  margin-bottom: 28px;
+}
+
+.form-page-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px 0;
+}
+
+.form-page-header p {
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+}
+
+.form-card {
+  background: rgba(25, 25, 45, 0.8);
+  border: 1px solid rgba(102, 126, 234, 0.12);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.form-card h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 20px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.form-submit-row {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .centro-navbar {
+    padding: 12px 16px;
+  }
+
+  .centro-content {
+    padding: 24px 16px;
+  }
+
+  .form-page-content {
+    padding: 24px 16px;
+  }
+
+  .centro-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .centro-actions {
+    flex-direction: column;
+  }
+
+  .centro-title {
+    font-size: 22px;
+  }
 }

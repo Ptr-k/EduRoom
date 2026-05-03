@@ -1,16 +1,22 @@
 package com.eduroom.backend.controller;
 
+import com.eduroom.backend.dto.CrearProfesorRequest;
+import com.eduroom.backend.exception.DuplicateEmailException;
 import com.eduroom.backend.model.Centro;
 import com.eduroom.backend.model.Usuario;
 import com.eduroom.backend.service.CentroService;
 import com.eduroom.backend.service.JwtService;
 import com.eduroom.backend.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controlador REST para los centros educativos.
@@ -31,6 +37,9 @@ public class CentroController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * GET /api/centros
@@ -83,5 +92,26 @@ public class CentroController {
     public ResponseEntity<Void> eliminarCentro(@PathVariable Long id) {
         centroService.borrarPorId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * POST /api/centros/{id}/profesores
+     * Crear un nuevo profesor asociado a un centro (solo ADMIN)
+     */
+    @PostMapping("/{id}/profesores")
+    public ResponseEntity<?> crearProfesor(
+            @PathVariable Long id,
+            @Valid @RequestBody CrearProfesorRequest request) {
+        try {
+            Centro centro = centroService.encontrarPorId(id);
+            Usuario profesor = usuarioService.crearProfesor(centro, request, passwordEncoder);
+            return ResponseEntity.status(HttpStatus.CREATED).body(profesor);
+        } catch (DuplicateEmailException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Error al crear el profesor"));
+        }
     }
 }

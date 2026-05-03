@@ -81,6 +81,9 @@ function Dashboard() {
             <div className="user-name">{user?.nombre || 'Usuario'}</div>
             <div className="user-role">{user?.rol || 'Sin rol'}</div>
           </div>
+          <button className="logout-button" style={{ marginRight: '10px', backgroundColor: 'rgba(255,255,255,0.1)' }} onClick={() => navigate('/configuracion')}>
+            ⚙️ Configuración
+          </button>
           <button className="logout-button" onClick={handleLogout}>
             Cerrar Sesión
           </button>

@@ -6,6 +6,7 @@ import CentroDetalle from './pages/CentroDetalle'
 import ReservaNueva from './pages/ReservaNueva'
 import ActividadNueva from './pages/ActividadNueva'
 import ProfesorNuevo from './pages/ProfesorNuevo'
+import Configuracion from './pages/Configuracion'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/configuracion" element={<Configuracion />} />
         <Route path="/centros/:id" element={<CentroDetalle />} />
         <Route path="/centros/:id/reservas/nueva" element={<ReservaNueva />} />
         <Route path="/centros/:id/actividades/nueva" element={<ActividadNueva />} />

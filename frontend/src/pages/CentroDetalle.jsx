@@ -15,14 +15,9 @@ function CentroDetalle() {
   const [aulas, setAulas] = useState([])
   const [selectedAulaId, setSelectedAulaId] = useState('')
   const [fecha, setFecha] = useState(() => new Date().toISOString().slice(0, 10))
-  const [horaInicio, setHoraInicio] = useState('09:00')
-  const [horaFin, setHoraFin] = useState('10:00')
-  const [asignatura, setAsignatura] = useState('')
   const [reservas, setReservas] = useState([])
   const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
-  const [message, setMessage] = useState('')
 
   const user = useMemo(() => authService.getCurrentUser(), [])
 
@@ -42,8 +37,8 @@ function CentroDetalle() {
         setCentro(c)
         setAulas(listaAulas)
         if (listaAulas.length > 0) {
-          const first = String(listaAulas[0].id)
-          setSelectedAulaId(first)
+          const firstId = String(listaAulas[0].id)
+          setSelectedAulaId(firstId)
           const rs = await reservaService.getReservasByAulaFecha(listaAulas[0].id, fecha)
           setReservas(rs)
         }
@@ -64,7 +59,6 @@ function CentroDetalle() {
       setReservas(rs)
     } catch (e) {
       console.error(e)
-      setError('Error al cargar las reservas del aula seleccionada.')
     }
   }
 
@@ -80,130 +74,177 @@ function CentroDetalle() {
     if (selectedAulaId) await cargarReservas(Number(selectedAulaId), f)
   }
 
-  const validarHoras = (ini, fin) => {
-    // comparar HH:MM
-    return ini < fin
-  }
-
-  const handleCrearReserva = async (e) => {
-    e.preventDefault()
-    setError('')
-    setMessage('')
-
-    if (!selectedAulaId) {
-      setError('Selecciona un aula.')
-      return
-    }
-    if (!validarHoras(horaInicio, horaFin)) {
-      setError('La hora de inicio debe ser anterior a la hora de fin.')
-      return
-    }
-
-    try {
-      setSaving(true)
-      const payload = {
-        aula: { id: Number(selectedAulaId) },
-        profesor: { id: user?.id },
-        fecha,
-        horaInicio,
-        horaFin,
-        asignatura: asignatura || 'Clase'
-      }
-      await reservaService.crearReserva(payload)
-      setMessage('Reserva creada correctamente')
-      setAsignatura('')
-      await cargarReservas(Number(selectedAulaId), fecha)
-    } catch (e) {
-      console.error(e)
-      const msg = e.response?.data?.message || 'No se pudo crear la reserva.'
-      setError(msg)
-    } finally {
-      setSaving(false)
-    }
-  }
-
   const formatHora = (hora) => {
     if (!hora) return '--:--'
-    if (typeof hora === 'string') return hora.slice(0,5)
+    if (typeof hora === 'string') return hora.slice(0, 5)
     if (Array.isArray(hora)) {
       return `${String(hora[0]).padStart(2, '0')}:${String(hora[1]).padStart(2, '0')}`
     }
     return '--:--'
   }
 
+  const handleLogout = () => {
+    authService.logout()
+    navigate('/login')
+  }
+
+  /* ── Loading ── */
   if (loading) {
     return (
-      <div style={{ padding: 24 }}>
-        <h2>Cargando centro...</h2>
+      <div className="centro-container">
+        <nav className="centro-navbar">
+          <div className="centro-navbar-brand">
+            <div className="brand-dot" />
+            <h2>EduRoom</h2>
+          </div>
+        </nav>
+        <div className="state-container">
+          <div className="spinner" />
+          <p className="state-text">Cargando centro...</p>
+        </div>
       </div>
     )
   }
 
+  /* ── Error ── */
   if (error) {
     return (
-      <div style={{ padding: 24 }}>
-        <h2>Centro</h2>
-        <div style={{ color: 'red' }}>{error}</div>
+      <div className="centro-container">
+        <nav className="centro-navbar">
+          <div className="centro-navbar-brand">
+            <div className="brand-dot" />
+            <h2>EduRoom</h2>
+          </div>
+          <button className="volver-link" onClick={() => navigate('/dashboard')}>← Dashboard</button>
+        </nav>
+        <div className="state-container">
+          <span style={{ fontSize: 48 }}>⚠️</span>
+          <p className="state-text" style={{ color: '#ff8787' }}>{error}</p>
+          <button className="centro-btn" onClick={() => navigate('/dashboard')}>Volver al dashboard</button>
+        </div>
       </div>
     )
   }
 
   return (
     <div className="centro-container">
-      <button className="volver-link centro-back" onClick={() => navigate('/dashboard')}>← Volver</button>
 
-      <div className="centro-header">
-        <div>
-          <h1 className="centro-title">{centro?.nombre}</h1>
-          <p className="centro-subtitle">Horario: {formatHora(centro?.horarioInicio)} - {formatHora(centro?.horarioFin)}</p>
+      {/* ── Navbar ── */}
+      <nav className="centro-navbar">
+        <div className="centro-navbar-brand">
+          <div className="brand-dot" />
+          <h2>EduRoom</h2>
         </div>
-      </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: '#fff' }}>{user?.nombre || user?.username}</div>
+            <div style={{ fontSize: 12, color: '#667eea', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{user?.rol}</div>
+          </div>
+          <button className="volver-link" onClick={() => navigate('/configuracion')}>⚙️ Configuración</button>
+          <button className="volver-link" onClick={handleLogout}>Cerrar sesión</button>
+        </div>
+      </nav>
 
-      <div className="centro-actions">
-        <Link className="centro-btn tertiary" to={`/centros/${centroId}/actividades/nueva`}>Crear actividad extraescolar</Link>
-        <Link className="centro-btn" to={`/centros/${centroId}/reservas/nueva`}>Crear reserva</Link>
-        <Link className="centro-btn secondary" to={`/centros/${centroId}/profesores/nuevo`}>Crear profesor</Link>
-      </div>
+      {/* ── Content ── */}
+      <div className="centro-content">
 
-      <div className="centro-grid">
-        <section className="centro-card">
-          <h3>Aulas y reservas</h3>
-          {aulas.length === 0 ? (
-            <p>No hay aulas en este centro.</p>
-          ) : (
-            <>
-              <label>
-                Aula:
-                <select value={selectedAulaId} onChange={handleChangeAula} className="centro-select">
-                  {aulas.map(a => (
-                    <option key={a.id} value={a.id}>{a.nombre} (cap. {a.capacidad || '-'})</option>
-                  ))}
-                </select>
-              </label>
+        <button className="volver-link" style={{ marginBottom: 28 }} onClick={() => navigate('/dashboard')}>
+          ← Volver al dashboard
+        </button>
 
-              <div className="centro-field">
-                <label>
-                  Fecha:
-                  <input type="date" value={fecha} onChange={handleChangeFecha} className="centro-input" />
-                </label>
-              </div>
+        {/* Header */}
+        <div className="centro-header">
+          <h1 className="centro-title">{centro?.nombre}</h1>
+          <p className="centro-subtitle">
+            🕐 Horario: {formatHora(centro?.horarioInicio)} – {formatHora(centro?.horarioFin)}
+          </p>
+        </div>
 
-              <h4>Reservas para el aula seleccionada</h4>
-              {reservas.length === 0 ? (
-                <p className="reserva-empty">Sin reservas para la fecha seleccionada.</p>
-              ) : (
-                <ul className="reserva-list">
-                  {reservas.map(r => (
-                    <li key={r.id}>
-                      {formatHora(r.horaInicio)} - {formatHora(r.horaFin)} · {r.asignatura || 'Clase'} · {r.profesor?.nombre || 'Profesor'} ({r.estado})
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </>
+        {/* Actions */}
+        <div className="centro-actions">
+          <Link className="centro-btn tertiary" to={`/centros/${centroId}/actividades/nueva`}>
+            🎭 Actividad extraescolar
+          </Link>
+          <Link className="centro-btn" to={`/centros/${centroId}/reservas/nueva`}>
+            📅 Nueva reserva
+          </Link>
+          {user?.rol === 'ADMIN' && (
+            <Link className="centro-btn secondary" to={`/centros/${centroId}/profesores/nuevo`}>
+              👨‍🏫 Nuevo profesor
+            </Link>
           )}
-        </section>
+        </div>
 
+        {/* Grid */}
+        <div className="centro-grid">
+
+          {/* Aulas y reservas */}
+          <section className="centro-card">
+            <h3>📚 Aulas y reservas</h3>
+            {aulas.length === 0 ? (
+              <p className="reserva-empty">No hay aulas en este centro.</p>
+            ) : (
+              <>
+                <div className="centro-field">
+                  <label className="form-label">Aula</label>
+                  <select value={selectedAulaId} onChange={handleChangeAula} className="centro-select">
+                    {aulas.map(a => (
+                      <option key={a.id} value={a.id}>{a.nombre} {a.capacidad ? `(cap. ${a.capacidad})` : ''}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="centro-field">
+                  <label className="form-label">Fecha</label>
+                  <input type="date" value={fecha} onChange={handleChangeFecha} className="centro-input" />
+                </div>
+
+                <p style={{ fontSize: 12, fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 10 }}>
+                  Reservas del día
+                </p>
+
+                {reservas.length === 0 ? (
+                  <p className="reserva-empty">Sin reservas para la fecha seleccionada.</p>
+                ) : (
+                  <ul className="reserva-list">
+                    {reservas.map(r => (
+                      <li key={r.id} className="reserva-item">
+                        <span className="hora">{formatHora(r.horaInicio)} – {formatHora(r.horaFin)}</span>
+                        <span className="sep">·</span>
+                        <span className="asignatura">{r.asignatura || 'Clase'}</span>
+                        <span className="estado">{r.estado}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
+            )}
+          </section>
+
+          {/* Info del centro */}
+          <section className="centro-card">
+            <h3>🏫 Información del centro</h3>
+            <div className="centro-field">
+              <label className="form-label">Nombre</label>
+              <div style={{ fontSize: 15, color: '#e0e0e0', fontWeight: 500 }}>{centro?.nombre}</div>
+            </div>
+            <div className="centro-field">
+              <label className="form-label">Dirección</label>
+              <div style={{ fontSize: 14, color: '#aaa' }}>{centro?.direccion || '—'}</div>
+            </div>
+            <div className="centro-field">
+              <label className="form-label">Horario</label>
+              <div style={{ fontSize: 14, color: '#aaa' }}>
+                {formatHora(centro?.horarioInicio)} – {formatHora(centro?.horarioFin)}
+              </div>
+            </div>
+            <div className="centro-field">
+              <label className="form-label">Aulas disponibles</label>
+              <div style={{ fontSize: 14, color: '#aaa' }}>{aulas.length}</div>
+            </div>
+          </section>
+
+        </div>
       </div>
     </div>
   )
