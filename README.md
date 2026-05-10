@@ -35,7 +35,7 @@ El proyecto sigue una arquitectura de cliente-servidor (Frontend/Backend) comuni
 
 ---
 
-## Verificación e Integración Final (Hito 5)
+## Verificación e Integración Final
 
 > **ESTADO DEL PROYECTO: ESTABLE Y VALIDADO**  
 > _El proyecto ha superado todas las fases de pruebas unitarias y de integración. Todas las partes principales (Frontend React, Backend Spring Boot y Base de Datos MariaDB) funcionan integradas de manera robusta y quedan validadas de cara al cierre final de la entrega._
