@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // RUTAS PÚBLICAS (no hace falta iniciar sesión)
                         .requestMatchers("/api/auth/**").permitAll() // login y registro
-                        .requestMatchers("/api/eventos/*/qr").permitAll() // escanear QR público: /api/eventos/{id}/qr
+                        .requestMatchers("/api/eventos/{id}/qr").permitAll() // escanear QR público: /api/eventos/{id}/qr
 
                         // DEMO de roles: rutas con permisos explícitos
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")

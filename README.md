@@ -36,3 +36,29 @@ El proyecto sigue una arquitectura de cliente-servidor (Frontend/Backend) comuni
 ---
 
 _Para consultar los detalles completos de despliegue, la estructura de base de datos, arquitectura y todos los módulos desarrollados, consulta el archivo [Documentación Operativa](DOCUMENTACION_OPERATIVA.md)._
+
+## 🚀 Verificación e Integración Final (Hito 5)
+
+> **ESTADO DEL PROYECTO: ESTABLE Y VALIDADO**  
+> _El proyecto ha superado todas las fases de pruebas unitarias y de integración. Todas las partes principales (Frontend React, Backend Spring Boot y Base de Datos MariaDB) funcionan integradas de manera robusta y quedan validadas de cara al cierre final de la entrega._
+
+Toda la evidencia técnica exigida para el cierre del proyecto se encuentra en el documento **[HITO5_VERIFICACION_INTEGRACION.md](HITO5_VERIFICACION_INTEGRACION.md)**, el cual contiene:
+
+- 📋 **Plan de pruebas ejecutado** — Casos de prueba reales con resultado esperado y obtenido.
+- 🔗 **Evidencias de integración** — Flujos de red *end-to-end* comprobados y certificados.
+- 💾 **Backup y restauración documentados** — Evidencias de creación y volcado de base de datos.
+- 📝 **Bitácora de incidencias** — Registro técnico de problemas encontrados y soluciones aplicadas durante la fase de estabilización.
+
+### 🛠️ Scripts de Backup/Restauración
+
+Para facilitar las labores de mantenimiento, se han desarrollado scripts automatizados en PowerShell (`/scripts`):
+
+```powershell
+# 1. Crear backup de la base de datos
+.\scripts\backup.ps1
+
+# 2. Restaurar desde un backup específico
+.\scripts\restore.ps1 -BackupFile ".\backups\backup_eduroom_20260510_164035.sql"
+```
+
+*Nota: Los backups se almacenan automáticamente en el directorio `backups/` con su correspondiente marca de tiempo.*

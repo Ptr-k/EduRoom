@@ -9,7 +9,8 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "actividades")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Actividad {

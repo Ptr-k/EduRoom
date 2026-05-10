@@ -12,6 +12,7 @@ import java.time.LocalTime;
 /**
  * DATAINITIALIZER PARA ENTORNO DE PRUEBAS
  * crea un usuario ( admin ) para el inicio de sesión y datos mínimos de demo
+ * quitar si se pone en producción
  */
 @Component
 public class DataInitializer implements CommandLineRunner {

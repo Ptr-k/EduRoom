@@ -6,7 +6,8 @@ import lombok.*;
 
 @Entity
 @Table(name = "aulas")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})

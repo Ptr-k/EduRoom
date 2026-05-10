@@ -7,7 +7,8 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "eventos")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Evento {

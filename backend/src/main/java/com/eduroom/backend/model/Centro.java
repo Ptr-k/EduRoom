@@ -8,7 +8,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "centros")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})

@@ -8,7 +8,8 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "reservas")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @com.fasterxml.jackson.annotation.JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
