@@ -22,13 +22,16 @@ public class EventoService {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private CentroService centroService;
+
 
     public List<Evento> encontrarTodos() {
         return eventoRepository.findAll();
     }
 
     public List<Evento> encontrarPorCentroId(Long centroId) {
-        return eventoRepository.findByCreadorCentroId(centroId);
+        return eventoRepository.findByCentroId(centroId);
     }
 
     public Evento encontrarPorId(Long id) {
@@ -41,6 +44,14 @@ public class EventoService {
         // se valida que el usuario exista para poder crear el evento
         Usuario creador = usuarioService.encontrarPorId(evento.getCreador().getId());
         evento.setCreador(creador); // Asegura el objeto completo
+
+        // si el evento trae centro, lo buscamos y asociamos
+        if (evento.getCentro() != null && evento.getCentro().getId() != null) {
+            evento.setCentro(centroService.encontrarPorId(evento.getCentro().getId()));
+        } else if (creador.getCentro() != null) {
+            // si no trae centro pero el creador sí tiene uno, usamos el del creador
+            evento.setCentro(creador.getCentro());
+        }
 
         // se crea el token del QR y se le pone una fehca de expiración
         evento.setQrToken(UUID.randomUUID().toString());

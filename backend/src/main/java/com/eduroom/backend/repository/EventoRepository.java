@@ -16,5 +16,5 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
 
     List<Evento> findByCreadorId(Long creadorId);
 
-    List<Evento> findByCreadorCentroId(Long centroId);
+    List<Evento> findByCentroId(Long centroId);
 }

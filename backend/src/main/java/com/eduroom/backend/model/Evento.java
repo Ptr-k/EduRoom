@@ -46,6 +46,11 @@ public class Evento {
     private LocalDate qrExpiracion;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_centro", nullable = false)
+    @JsonIgnoreProperties({"usuarios", "aulas"})
+    private Centro centro;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_creador", nullable = false)
     private Usuario creador;
 
