@@ -4,6 +4,7 @@ import authService from '../services/authService'
 import centroService from '../services/centroService'
 import aulaService from '../services/aulaService'
 import reservaService from '../services/reservaService'
+import eventoService from '../services/eventoService'
 import './CentroDetalle.css'
 
 function CentroDetalle() {
@@ -16,6 +17,7 @@ function CentroDetalle() {
   const [selectedAulaId, setSelectedAulaId] = useState('')
   const [fecha, setFecha] = useState(() => new Date().toISOString().slice(0, 10))
   const [reservas, setReservas] = useState([])
+  const [eventos, setEventos] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -30,12 +32,14 @@ function CentroDetalle() {
       try {
         setLoading(true)
         setError('')
-        const [c, listaAulas] = await Promise.all([
+        const [c, listaAulas, listaEventos] = await Promise.all([
           centroService.getCentroById(centroId),
-          aulaService.getAulasByCentro(centroId)
+          aulaService.getAulasByCentro(centroId),
+          eventoService.getEventosByCentro(centroId)
         ])
         setCentro(c)
         setAulas(listaAulas)
+        setEventos(listaEventos)
         if (listaAulas.length > 0) {
           const firstId = String(listaAulas[0].id)
           setSelectedAulaId(firstId)
@@ -208,7 +212,7 @@ function CentroDetalle() {
                 ) : (
                   <ul className="reserva-list">
                     {reservas.map(r => (
-                      <li key={r.id} className="reserva-item">
+                      <li key={r.id} className="reserva-item" style={{ cursor: 'pointer' }} onClick={() => navigate(`/centros/${centroId}/reservas/${r.id}`)}>
                         <span className="hora">{formatHora(r.horaInicio)} – {formatHora(r.horaFin)}</span>
                         <span className="sep">·</span>
                         <span className="asignatura">{r.asignatura || 'Clase'}</span>
@@ -218,6 +222,28 @@ function CentroDetalle() {
                   </ul>
                 )}
               </>
+            )}
+          </section>
+
+          {/* Actividades (Eventos) */}
+          <section className="centro-card">
+            <h3>🎭 Actividades y Eventos</h3>
+            {eventos.length === 0 ? (
+              <p className="reserva-empty">No hay actividades activas en este centro.</p>
+            ) : (
+              <ul className="reserva-list">
+                {eventos.map(e => (
+                  <li key={e.id} className="reserva-item" style={{ cursor: 'pointer' }} onClick={() => navigate(`/centros/${centroId}/actividades/${e.id}`)}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: 600, color: '#e0e0e0', marginBottom: 4 }}>{e.titulo}</div>
+                      <div style={{ fontSize: 13, color: '#aaa' }}>
+                        {e.lugar} · {e.fecha} · {formatHora(e.horaInicio)} - {formatHora(e.horaFin)}
+                      </div>
+                    </div>
+                    <span style={{ color: '#667eea', fontWeight: 500 }}>Ver detalles →</span>
+                  </li>
+                ))}
+              </ul>
             )}
           </section>
 

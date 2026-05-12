@@ -27,6 +27,10 @@ public class EventoService {
         return eventoRepository.findAll();
     }
 
+    public List<Evento> encontrarPorCentroId(Long centroId) {
+        return eventoRepository.findByCreadorCentroId(centroId);
+    }
+
     public Evento encontrarPorId(Long id) {
         return eventoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Evento", id));
@@ -63,7 +67,7 @@ public class EventoService {
         Evento evento = eventoOpt.get();
 
         // se tiene que asegurar que no ha caducado el qr
-        if (evento.getQrExpiracion().isBefore(LocalDate.now())) {
+        if (evento.getQrExpiracion() != null && evento.getQrExpiracion().isBefore(LocalDate.now())) {
             throw new QrExpirationException(qrToken);
         }
 

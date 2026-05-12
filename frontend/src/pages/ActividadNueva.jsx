@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import authService from '../services/authService'
+import eventoService from '../services/eventoService'
 import './CentroDetalle.css'
 
 function ActividadNueva() {
@@ -36,13 +37,21 @@ function ActividadNueva() {
 
     try {
       setSaving(true)
-      // TODO: llamar al servicio cuando esté disponible
-      // await actividadService.crearActividad({ centroId, nombre, descripcion, fecha, horaInicio, horaFin, plazas: Number(plazas) })
-      await new Promise(r => setTimeout(r, 800)) // simulación temporal
+      const data = {
+        titulo: nombre,
+        descripcion,
+        lugar: 'Centro Educativo', // Se podría añadir al form si se quisiera
+        fecha,
+        horaInicio,
+        horaFin
+      }
+      const nuevoEvento = await eventoService.createEvento(data)
       setMessage('Actividad creada correctamente.')
       setNombre('')
       setDescripcion('')
       setPlazas('')
+      // Redirigir al detalle de la actividad
+      navigate(`/centros/${centroId}/actividades/${nuevoEvento.id}`)
     } catch (e) {
       console.error(e)
       const msg = e.response?.data?.message || 'No se pudo crear la actividad.'

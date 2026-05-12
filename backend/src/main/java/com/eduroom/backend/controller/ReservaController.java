@@ -64,4 +64,11 @@ public class ReservaController {
                 .filter(r -> r.getAula() != null && r.getAula().getId().equals(aula.getId()) && fecha.equals(r.getFecha()))
                 .collect(Collectors.toList()));
     }
+
+    // DELETE /api/reservas/{id} - eliminar reserva
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarReserva(@PathVariable Long id) {
+        reservaService.borrarPorId(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -3,6 +3,9 @@ package com.eduroom.backend.controller;
 import com.eduroom.backend.model.Evento;
 import com.eduroom.backend.service.EventoService;
 import com.eduroom.backend.service.QrCodeService;
+import com.eduroom.backend.service.JwtService;
+import com.eduroom.backend.service.UsuarioService;
+import com.eduroom.backend.model.Usuario;
 import com.google.zxing.WriterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +22,7 @@ import java.util.List;
 @RequestMapping("/api/eventos")
 @CrossOrigin(origins = "http://localhost:3000") // permitir solicitudes desde el frontend por su localhost
 public class EventoController {
-    // TODO ESTO ES LA PARTE DEL MAPPING Y API
+    // ESTO ES LA PARTE DEL MAPPING Y API
     // POSTS Y GETS
 
     @Autowired
@@ -28,11 +31,17 @@ public class EventoController {
     @Autowired
     private QrCodeService qrCodeService;
 
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
     @Value("${app.frontend.url:http://localhost:3000}")
     private String frontendUrl;
 
-     // GET /api/eventos
-     // obtener todos los eventos que hay
+    // GET /api/eventos
+    // obtener todos los eventos que hay
     @GetMapping
     public ResponseEntity<List<Evento>> getAllEventos() {
         return ResponseEntity.ok(eventoService.encontrarTodos());
@@ -45,25 +54,36 @@ public class EventoController {
         return ResponseEntity.ok(eventoService.encontrarPorId(id));
     }
 
+    // GET /api/eventos/centro/{centroId}
+    // obtener los eventos de un centro
+    @GetMapping("/centro/{centroId}")
+    public ResponseEntity<List<Evento>> getEventosByCentro(@PathVariable Long centroId) {
+        return ResponseEntity.ok(eventoService.encontrarPorCentroId(centroId));
+    }
+
     // POST /api/eventos
     // crear un nuevo evento
     @PostMapping
-    public ResponseEntity<Evento> createEvento(@RequestBody Evento evento) {
+    public ResponseEntity<Evento> createEvento(@RequestHeader("Authorization") String authHeader, @RequestBody Evento evento) {
+        String token = authHeader.replace("Bearer ", "");
+        String email = jwtService.extractEmail(token);
+        Usuario usuario = usuarioService.encontrarPorEmail(email);
+        evento.setCreador(usuario);
+        
         Evento nuevoEvento = eventoService.crearEvento(evento);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoEvento);
     }
 
-     // DELETE /api/eventos/{id}
-     // eliminar evento
+    // DELETE /api/eventos/{id}
+    // eliminar evento
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvento(@PathVariable Long id) {
         eventoService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-
-     // GET /api/eventos/{id}/qr - bbtener imagen QR del evento
-     // devuelve una imagen PNG que redirige a la página de registro
+    // GET /api/eventos/{id}/qr - bbtener imagen QR del evento
+    // devuelve una imagen PNG que redirige a la página de registro
     @GetMapping("/{id}/qr")
     public ResponseEntity<byte[]> getQrCode(@PathVariable Long id) {
         try {
@@ -83,6 +103,5 @@ public class EventoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
 }

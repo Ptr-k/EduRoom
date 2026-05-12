@@ -11,6 +11,14 @@ const reservaService = {
     })
     return res.data
   },
+  
+  getReservaById: async (id) => {
+    const token = authService.getToken()
+    const res = await axios.get(`${API_URL}/reservas/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    return res.data
+  },
 
   getReservasByCentro: async (centroId) => {
     const token = authService.getToken()
@@ -24,6 +32,14 @@ const reservaService = {
     const token = authService.getToken()
     const url = fecha ? `${API_URL}/reservas/aula/${aulaId}?fecha=${fecha}` : `${API_URL}/reservas/aula/${aulaId}`
     const res = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    return res.data
+  },
+  
+  deleteReserva: async (id) => {
+    const token = authService.getToken()
+    const res = await axios.delete(`${API_URL}/reservas/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     return res.data
