@@ -65,6 +65,12 @@ public class ReservaController {
                 .collect(Collectors.toList()));
     }
 
+    // GET /api/reservas/{id} - obtener reserva por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Reserva> getReservaById(@PathVariable Long id) {
+        return ResponseEntity.ok(reservaService.encontrarPorId(id));
+    }
+
     // DELETE /api/reservas/{id} - eliminar reserva
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarReserva(@PathVariable Long id) {

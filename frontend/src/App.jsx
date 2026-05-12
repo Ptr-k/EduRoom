@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import CentroDetalle from './pages/CentroDetalle'
+import CentroNuevo from './pages/CentroNuevo'
 import ReservaNueva from './pages/ReservaNueva'
 import ActividadNueva from './pages/ActividadNueva'
 import ActividadDetalle from './pages/ActividadDetalle'
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/configuracion" element={<Configuracion />} />
+        <Route path="/centros/nuevo" element={<CentroNuevo />} />
         <Route path="/centros/:id" element={<CentroDetalle />} />
         <Route path="/centros/:id/reservas/nueva" element={<ReservaNueva />} />
         <Route path="/centros/:id/reservas/:reservaId" element={<ReservaDetalle />} />

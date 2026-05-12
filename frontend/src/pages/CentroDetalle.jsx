@@ -6,6 +6,7 @@ import aulaService from '../services/aulaService'
 import reservaService from '../services/reservaService'
 import eventoService from '../services/eventoService'
 import './CentroDetalle.css'
+import './CentroDetalle.admin.css'
 
 function CentroDetalle() {
   const { id } = useParams()
@@ -20,6 +21,14 @@ function CentroDetalle() {
   const [eventos, setEventos] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+
+  // Estado para el panel de añadir aula (solo ADMIN)
+  const [showAddAula, setShowAddAula] = useState(false)
+  const [nuevaAulaNombre, setNuevaAulaNombre] = useState('')
+  const [nuevaAulaCapacidad, setNuevaAulaCapacidad] = useState('')
+  const [addAulaLoading, setAddAulaLoading] = useState(false)
+  const [addAulaError, setAddAulaError] = useState('')
+  const [addAulaSuccess, setAddAulaSuccess] = useState('')
 
   const user = useMemo(() => authService.getCurrentUser(), [])
 
@@ -90,6 +99,73 @@ function CentroDetalle() {
   const handleLogout = () => {
     authService.logout()
     navigate('/login')
+  }
+
+  // ── Añadir aula (solo ADMIN) ──
+  const handleAddAula = async (e) => {
+    e.preventDefault()
+    if (!nuevaAulaNombre.trim()) {
+      setAddAulaError('El nombre del aula es obligatorio.')
+      return
+    }
+    try {
+      setAddAulaLoading(true)
+      setAddAulaError('')
+      setAddAulaSuccess('')
+      const nueva = await aulaService.crearAula(centroId, {
+        nombre: nuevaAulaNombre.trim(),
+        capacidad: nuevaAulaCapacidad ? parseInt(nuevaAulaCapacidad) : null
+      })
+      setAulas(prev => [...prev, nueva])
+      if (!selectedAulaId) {
+        setSelectedAulaId(String(nueva.id))
+        await cargarReservas(nueva.id, fecha)
+      }
+      setAddAulaSuccess(`Aula "${nueva.nombre}" creada correctamente.`)
+      setNuevaAulaNombre('')
+      setNuevaAulaCapacidad('')
+      setTimeout(() => {
+        setAddAulaSuccess('')
+        setShowAddAula(false)
+      }, 1800)
+    } catch (err) {
+      console.error(err)
+      setAddAulaError(err.response?.data?.error || 'Error al crear el aula.')
+    } finally {
+      setAddAulaLoading(false)
+    }
+  }
+
+  const handleEliminarCentro = async () => {
+    if (window.confirm('¿Estás seguro de que deseas eliminar este centro? Esta acción eliminará el centro y todo lo asociado a él. No se puede deshacer.')) {
+      try {
+        await centroService.eliminarCentro(centroId)
+        navigate('/dashboard')
+      } catch (err) {
+        console.error('Error al eliminar centro:', err)
+        alert('Hubo un error al eliminar el centro. Por favor, inténtalo de nuevo.')
+      }
+    }
+  }
+
+  const handleEliminarAula = async (aulaId, aulaNombre) => {
+    if (!window.confirm(`¿Eliminar el aula "${aulaNombre}"? Esta acción no se puede deshacer.`)) return
+    try {
+      await aulaService.eliminarAula(aulaId)
+      const nuevasAulas = aulas.filter(a => a.id !== aulaId)
+      setAulas(nuevasAulas)
+      if (String(aulaId) === selectedAulaId) {
+        if (nuevasAulas.length > 0) {
+          setSelectedAulaId(String(nuevasAulas[0].id))
+          await cargarReservas(nuevasAulas[0].id, fecha)
+        } else {
+          setSelectedAulaId('')
+          setReservas([])
+        }
+      }
+    } catch (err) {
+      console.error('Error al eliminar aula:', err)
+    }
   }
 
   /* ── Loading ── */
@@ -172,30 +248,115 @@ function CentroDetalle() {
           <Link className="centro-btn" to={`/centros/${centroId}/reservas/nueva`}>
             📅 Nueva reserva
           </Link>
-          {user?.rol === 'ADMIN' && (
-            <Link className="centro-btn secondary" to={`/centros/${centroId}/profesores/nuevo`}>
-              👨‍🏫 Nuevo profesor
-            </Link>
-          )}
         </div>
+
+        {/* Menú de Opciones del Centro (ADMIN) */}
+        {user?.rol === 'ADMIN' && (
+          <div style={{ marginBottom: '24px', background: '#232333', padding: '20px', borderRadius: '12px', border: '1px solid #3a3a50' }}>
+            <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', color: '#fff', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              ⚙️ Opciones del Centro
+            </h3>
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              <Link className="centro-btn secondary" to={`/centros/${centroId}/profesores/nuevo`}>
+                👨‍🏫 Añadir profesor
+              </Link>
+              <button 
+                className="centro-btn" 
+                style={{ background: '#e53935', color: '#fff', border: 'none' }} 
+                onClick={handleEliminarCentro}
+              >
+                🗑️ Eliminar centro
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Grid */}
         <div className="centro-grid">
 
           {/* Aulas y reservas */}
           <section className="centro-card">
-            <h3>📚 Aulas y reservas</h3>
+            <div className="cd-section-header">
+              <h3>📚 Aulas y reservas</h3>
+              {user?.rol === 'ADMIN' && (
+                <button
+                  id="btn-add-aula"
+                  className="cd-btn-add-aula"
+                  onClick={() => { setShowAddAula(v => !v); setAddAulaError(''); setAddAulaSuccess('') }}
+                >
+                  {showAddAula ? '✕ Cerrar' : '＋ Añadir aula'}
+                </button>
+              )}
+            </div>
+
+            {/* Panel inline para añadir aula */}
+            {showAddAula && user?.rol === 'ADMIN' && (
+              <form className="cd-add-aula-panel" onSubmit={handleAddAula}>
+                {addAulaError && (
+                  <div className="cd-aula-msg cd-aula-msg-error">⚠️ {addAulaError}</div>
+                )}
+                {addAulaSuccess && (
+                  <div className="cd-aula-msg cd-aula-msg-success">✅ {addAulaSuccess}</div>
+                )}
+                <div className="cd-add-aula-row">
+                  <input
+                    id="cd-nueva-aula-nombre"
+                    type="text"
+                    className="centro-input"
+                    value={nuevaAulaNombre}
+                    onChange={e => setNuevaAulaNombre(e.target.value)}
+                    placeholder="Nombre del aula (ej. Aula 1)"
+                    style={{ flex: 2 }}
+                    autoFocus
+                  />
+                  <input
+                    id="cd-nueva-aula-capacidad"
+                    type="number"
+                    className="centro-input"
+                    value={nuevaAulaCapacidad}
+                    onChange={e => setNuevaAulaCapacidad(e.target.value)}
+                    placeholder="Capacidad"
+                    min="1"
+                    style={{ flex: 1 }}
+                  />
+                  <button
+                    type="submit"
+                    className="centro-btn"
+                    disabled={addAulaLoading}
+                    style={{ whiteSpace: 'nowrap', padding: '10px 16px' }}
+                  >
+                    {addAulaLoading ? 'Guardando...' : '+ Crear'}
+                  </button>
+                </div>
+              </form>
+            )}
+
             {aulas.length === 0 ? (
               <p className="reserva-empty">No hay aulas en este centro.</p>
             ) : (
               <>
                 <div className="centro-field">
                   <label className="form-label">Aula</label>
-                  <select value={selectedAulaId} onChange={handleChangeAula} className="centro-select">
-                    {aulas.map(a => (
-                      <option key={a.id} value={a.id}>{a.nombre} {a.capacidad ? `(cap. ${a.capacidad})` : ''}</option>
-                    ))}
-                  </select>
+                  <div className="cd-aula-select-row">
+                    <select value={selectedAulaId} onChange={handleChangeAula} className="centro-select" style={{ flex: 1 }}>
+                      {aulas.map(a => (
+                        <option key={a.id} value={a.id}>{a.nombre} {a.capacidad ? `(cap. ${a.capacidad})` : ''}</option>
+                      ))}
+                    </select>
+                    {user?.rol === 'ADMIN' && selectedAulaId && (
+                      <button
+                        type="button"
+                        className="cd-btn-delete-aula"
+                        title="Eliminar esta aula"
+                        onClick={() => {
+                          const aula = aulas.find(a => String(a.id) === selectedAulaId)
+                          if (aula) handleEliminarAula(aula.id, aula.nombre)
+                        }}
+                      >
+                        🗑️
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="centro-field">

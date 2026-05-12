@@ -25,6 +25,27 @@ const centroService = {
       }
     })
     return response.data
+  },
+
+  // POST /api/centros - crear centro (solo ADMIN)
+  crearCentro: async (centroData) => {
+    const token = authService.getToken()
+    const response = await axios.post(`${API_URL}/centros`, centroData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    return response.data
+  },
+
+  // DELETE /api/centros/{id} - eliminar centro (solo ADMIN)
+  eliminarCentro: async (id) => {
+    const token = authService.getToken()
+    await axios.delete(`${API_URL}/centros/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
   }
 }
 

@@ -22,6 +22,8 @@ public class Centro {
     @Column(nullable = false, unique = true)
     private String nombre;
 
+    private String direccion;
+
     private LocalTime horarioInicio = LocalTime.of(8, 15);
     private LocalTime horarioFin = LocalTime.of(14, 45);
 

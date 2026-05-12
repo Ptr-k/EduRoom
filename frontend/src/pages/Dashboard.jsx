@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import authService from '../services/authService'
 import centroService from '../services/centroService'
 import './Dashboard.css'
+import './Dashboard.admin.css'
 
 /**
  * Página principal después del login.
@@ -93,12 +94,26 @@ function Dashboard() {
       {/* CONTENIDO PRINCIPAL */}
       <main className="dashboard-content">
         <div className="dashboard-header">
-          <h1>Mis Centros</h1>
-          <p>
-            {user?.rol === 'ADMIN'
-              ? 'Tienes acceso a todos los centros como administrador'
-              : 'Centro educativo al que perteneces'}
-          </p>
+          <div className="dashboard-header-top">
+            <div>
+              <h1>Mis Centros</h1>
+              <p>
+                {user?.rol === 'ADMIN'
+                  ? 'Tienes acceso a todos los centros como administrador'
+                  : 'Centro educativo al que perteneces'}
+              </p>
+            </div>
+            {user?.rol === 'ADMIN' && (
+              <button
+                id="btn-crear-centro"
+                className="btn-crear-centro"
+                onClick={() => navigate('/centros/nuevo')}
+              >
+                <span className="btn-crear-icon">＋</span>
+                Crear centro
+              </button>
+            )}
+          </div>
         </div>
 
         {/* ESTADOS: cargando, error, vacío, o lista */}
@@ -119,9 +134,22 @@ function Dashboard() {
           <div className="empty-container">
             <span className="empty-icon">🏫</span>
             <span className="empty-title">Sin centros asignados</span>
-            <span className="empty-text">
-              No tienes ningún centro educativo asignado. Contacta con un administrador.
-            </span>
+            {user?.rol === 'ADMIN' ? (
+              <>
+                <span className="empty-text">Todavía no hay ningún centro creado.</span>
+                <button
+                  className="btn-crear-centro btn-crear-centro-empty"
+                  onClick={() => navigate('/centros/nuevo')}
+                >
+                  <span className="btn-crear-icon">＋</span>
+                  Crear el primer centro
+                </button>
+              </>
+            ) : (
+              <span className="empty-text">
+                No tienes ningún centro educativo asignado. Contacta con un administrador.
+              </span>
+            )}
           </div>
         ) : (
           <div className="centros-grid">

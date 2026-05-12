@@ -59,6 +59,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/centros/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/centros/**").hasRole("ADMIN")
 
+                        // Control granular para aulas: solo ADMIN puede crear/eliminar
+                        .requestMatchers(HttpMethod.POST, "/api/aulas/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/aulas/**").hasRole("ADMIN")
+
                         // Cualquier otra petición requiere estar autenticado
                         .anyRequest().authenticated()
                 )
