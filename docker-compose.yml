@@ -11,7 +11,7 @@ services:
       MYSQL_PASSWORD: 1234
     volumes:
       - db_data:/var/lib/mysql
-      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./backend/db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     ports:
       - "3306:3306"
     networks:
@@ -47,7 +47,7 @@ services:
     build: ./frontend
     container_name: eduroom_frontend
     ports:
-      - "443:80"
+      - "80:80"
     depends_on:
       - backend
     networks:

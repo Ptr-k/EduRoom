@@ -51,6 +51,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll() // login y registro
                         .requestMatchers("/api/eventos/{id}/qr").permitAll() // escanear QR público
                         .requestMatchers("/api/asistencia/registro/**").permitAll() // registro público por QR
+                        .requestMatchers("/api/health").permitAll() // health check para docker
 
                         // DEMO de roles: rutas con permisos explícitos
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
