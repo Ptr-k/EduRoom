@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
-import './CentroDetalle.css'
+import api from '../services/api'
 
 function RegistroAsistencia() {
   const { qrToken } = useParams()
@@ -14,7 +13,7 @@ function RegistroAsistencia() {
 
     setEstado('cargando')
     try {
-      await axios.post(`http://localhost:8080/api/asistencia/registro/${qrToken}`, {
+      await api.post(`/asistencia/registro/${qrToken}`, {
         nombreAlumno
       })
       setEstado('exito')

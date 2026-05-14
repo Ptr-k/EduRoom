@@ -96,7 +96,7 @@ function ActividadDetalle() {
         <div className="centro-header">
           <h1 className="centro-title">{evento?.titulo}</h1>
           <p className="centro-subtitle">
-            Fecha: {evento?.fecha} | Horario: {formatHora(evento?.horaInicio)} – {formatHora(evento?.horaFin)}<br/>
+            Fecha: {evento?.fecha} | Horario: {formatHora(evento?.horaInicio)} – {formatHora(evento?.horaFin)}<br />
             Reservado por: {evento?.creador?.nombre || evento?.creador?.email || 'Desconocido'}
           </p>
         </div>
@@ -116,20 +116,20 @@ function ActividadDetalle() {
               Los asistentes pueden escanear este código para registrar su asistencia a la actividad.
             </p>
             <div style={{ background: '#fff', padding: 16, borderRadius: 12, marginBottom: 16 }}>
-              <img 
-                src={`${import.meta.env.VITE_API_URL || ''}/api/eventos/${actividadId}/qr`} 
-                alt="QR Asistencia" 
+              <img
+                src={`${import.meta.env.VITE_API_URL || ''}/api/eventos/${actividadId}/qr`}
+                alt="QR Asistencia"
                 style={{ width: 200, height: 200, objectFit: 'contain' }}
               />
             </div>
-            
+
             <div style={{ width: '100%', textAlign: 'center' }}>
               <p style={{ fontSize: 13, color: '#aaa', marginBottom: 8 }}>O comparte este enlace directo:</p>
-              <input 
-                type="text" 
-                className="centro-input" 
-                readOnly 
-                value={`${import.meta.env.VITE_FRONTEND_URL || window.location.origin}/eventos/${evento?.qrToken}/registro`} 
+              <input
+                type="text"
+                className="centro-input"
+                readOnly
+                value={`${import.meta.env.VITE_FRONTEND_URL || window.location.origin}/eventos/${evento?.qrToken}/registro`}
                 style={{ textAlign: 'center', fontSize: 13 }}
                 onClick={e => e.target.select()}
               />
