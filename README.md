@@ -2,6 +2,10 @@
 
 EduRoom es una plataforma web moderna para la gestión integral de aulas, centros y eventos educativos. Está diseñada para facilitar la administración de espacios, recursos y personal en instituciones educativas, ofreciendo una experiencia de usuario _premium_ con distintos niveles de acceso según el rol del usuario (Administrador o Profesor).
 
+## PROYECTO DEPLEGADO EN RAILWAY
+https://eduroom.up.railway.app
+- Administrador: admin@eduroom.com
+- Contraseña: admin123
 ---
 
 ## Características Destacadas
@@ -12,7 +16,7 @@ Una de las funcionalidades más potentes de EduRoom es el registro automatizado 
 - **Registro sin Login:** Los asistentes externos pueden registrar su asistencia escaneando el código QR sin necesidad de tener cuenta en la plataforma.
 - **Monitoreo en Tiempo Real:** Los creadores de la actividad pueden visualizar la lista de asistentes registrados al instante, incluyendo la marca de tiempo exacta del registro.
 - **Integridad de Datos:** Implementación de borrado en cascada para asegurar que, al eliminar una actividad, todos los registros de asistencia asociados se limpien correctamente de la base de datos.
-- **Auto-Limpieza Inteligente:** Sistema programado que elimina automáticamente eventos y reservas cuya fecha y hora de fin ya han pasado, manteniendo la base de datos optimizada e higienizada.
+- **Auto-Limpieza de Actividades:** Sistema programado que elimina automáticamente eventos y reservas cuya fecha y hora de fin ya han pasado, manteniendo la base de datos optimizada.
 
 ### 2. Gestión de Centros y Personal
 - **Control Granular:** Los administradores tienen visión global de todos los centros, mientras que los profesores operan exclusivamente dentro de su centro asignado.
@@ -101,7 +105,6 @@ docker-compose ps
 
 - **Frontend:** [http://localhost](http://localhost) (Puerto 80)
 - **Backend API:** [http://localhost:8080/api](http://localhost:8080/api)
-- **Base de Datos:** localhost:3306 (User: root / Pass: 1234)
 
 ---
 
