@@ -1,14 +1,14 @@
 # Build stage
-FROM maven:3.9-eclipse-temurin-21 AS build
+FROM maven:3.9.6-eclipse-temurin-21-alpine AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Run stage
-FROM openjdk:21-jdk-slim
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+FROM eclipse-temurin:21-jre-alpine
+RUN apk add --no-cache curl
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/target/backend-1.0.0-SNAPSHOT.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
