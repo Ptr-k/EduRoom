@@ -117,7 +117,7 @@ function ActividadDetalle() {
             </p>
             <div style={{ background: '#fff', padding: 16, borderRadius: 12, marginBottom: 16 }}>
               <img 
-                src={`http://localhost:8080/api/eventos/${actividadId}/qr`} 
+                src={`${import.meta.env.VITE_API_URL || ''}/api/eventos/${actividadId}/qr`} 
                 alt="QR Asistencia" 
                 style={{ width: 200, height: 200, objectFit: 'contain' }}
               />
@@ -129,7 +129,7 @@ function ActividadDetalle() {
                 type="text" 
                 className="centro-input" 
                 readOnly 
-                value={`http://localhost:3000/eventos/${evento?.qrToken}/registro`} 
+                value={`${import.meta.env.VITE_FRONTEND_URL || window.location.origin}/eventos/${evento?.qrToken}/registro`} 
                 style={{ textAlign: 'center', fontSize: 13 }}
                 onClick={e => e.target.select()}
               />
