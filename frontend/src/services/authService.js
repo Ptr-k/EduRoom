@@ -1,12 +1,9 @@
-import axios from 'axios'
-
-// DESARROLLO, Vite hace proxy de /api a http://localhost:8080 ( ver vite.config.js para ajustes sii )
-const API_URL = '/api'
+import api from './api'
 
 const authService = {
   // Login de usuario
   login: async (email, password) => {
-    const response = await axios.post(`${API_URL}/auth/login`, {
+    const response = await api.post('/auth/login', {
       email,
       password
     })

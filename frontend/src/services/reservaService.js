@@ -1,47 +1,29 @@
-import axios from 'axios'
-import authService from './authService'
-
-const API_URL = '/api'
+import api from './api'
 
 const reservaService = {
   crearReserva: async (reserva) => {
-    const token = authService.getToken()
-    const res = await axios.post(`${API_URL}/reservas`, reserva, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await api.post('/reservas', reserva)
     return res.data
   },
   
   getReservaById: async (id) => {
-    const token = authService.getToken()
-    const res = await axios.get(`${API_URL}/reservas/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await api.get(`/reservas/${id}`)
     return res.data
   },
 
   getReservasByCentro: async (centroId) => {
-    const token = authService.getToken()
-    const res = await axios.get(`${API_URL}/reservas/centro/${centroId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await api.get(`/reservas/centro/${centroId}`)
     return res.data
   },
 
   getReservasByAulaFecha: async (aulaId, fecha) => {
-    const token = authService.getToken()
-    const url = fecha ? `${API_URL}/reservas/aula/${aulaId}?fecha=${fecha}` : `${API_URL}/reservas/aula/${aulaId}`
-    const res = await axios.get(url, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const url = fecha ? `/reservas/aula/${aulaId}?fecha=${fecha}` : `/reservas/aula/${aulaId}`
+    const res = await api.get(url)
     return res.data
   },
   
   deleteReserva: async (id) => {
-    const token = authService.getToken()
-    const res = await axios.delete(`${API_URL}/reservas/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await api.delete(`/reservas/${id}`)
     return res.data
   }
 }

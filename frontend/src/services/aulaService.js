@@ -1,40 +1,23 @@
-import axios from 'axios'
-import authService from './authService'
-
-const API_URL = '/api'
+import api from './api'
 
 const aulaService = {
   getAulasByCentro: async (centroId) => {
-    const token = authService.getToken()
-    const res = await axios.get(`${API_URL}/aulas/centro/${centroId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await api.get(`/aulas/centro/${centroId}`)
     return res.data
   },
 
   getAulaById: async (id) => {
-    const token = authService.getToken()
-    const res = await axios.get(`${API_URL}/aulas/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await api.get(`/aulas/${id}`)
     return res.data
   },
 
-  // POST /api/aulas/centro/{centroId} - crear aula (solo ADMIN)
   crearAula: async (centroId, aulaData) => {
-    const token = authService.getToken()
-    const res = await axios.post(`${API_URL}/aulas/centro/${centroId}`, aulaData, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await api.post(`/aulas/centro/${centroId}`, aulaData)
     return res.data
   },
 
-  // DELETE /api/aulas/{id} - eliminar aula (solo ADMIN)
   eliminarAula: async (id) => {
-    const token = authService.getToken()
-    await axios.delete(`${API_URL}/aulas/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    await api.delete(`/aulas/${id}`)
   }
 }
 
