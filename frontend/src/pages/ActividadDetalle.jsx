@@ -96,7 +96,7 @@ function ActividadDetalle() {
         <div className="centro-header">
           <h1 className="centro-title">{evento?.titulo}</h1>
           <p className="centro-subtitle">
-            Lugar: {evento?.lugar} | Fecha: {evento?.fecha} | Horario: {formatHora(evento?.horaInicio)} – {formatHora(evento?.horaFin)}<br/>
+            Fecha: {evento?.fecha} | Horario: {formatHora(evento?.horaInicio)} – {formatHora(evento?.horaFin)}<br/>
             Reservado por: {evento?.creador?.nombre || evento?.creador?.email || 'Desconocido'}
           </p>
         </div>

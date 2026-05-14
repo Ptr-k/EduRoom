@@ -163,6 +163,10 @@ function Configuracion() {
               </div>
             )}
           </div>
+
+          <div style={{ marginTop: '32px', textAlign: 'center', opacity: 0.7, fontSize: '13px', color: '#aaa', paddingBottom: '40px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '24px' }}>
+            <p>Proyecto hecho por <strong>Patricia Camargo</strong>. Todos los derechos reservados.</p>
+          </div>
           
         </div>
       </div>

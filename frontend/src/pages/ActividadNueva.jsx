@@ -40,7 +40,6 @@ function ActividadNueva() {
       const data = {
         titulo: nombre,
         descripcion,
-        lugar: 'Centro Educativo', // Se podría añadir al form si se quisiera
         fecha,
         horaInicio,
         horaFin,
