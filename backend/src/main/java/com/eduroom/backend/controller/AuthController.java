@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/auth") // las rutas empiezan así
-@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     @Autowired

@@ -20,7 +20,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/eventos")
-@CrossOrigin(origins = "http://localhost:3000") // permitir solicitudes desde el frontend por su localhost
 public class EventoController {
     // ESTO ES LA PARTE DEL MAPPING Y API
     // POSTS Y GETS

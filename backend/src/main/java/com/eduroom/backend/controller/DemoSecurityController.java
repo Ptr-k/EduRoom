@@ -16,7 +16,6 @@ import java.util.Map;
  * - /api/admin/hello (solo ROLE_ADMIN)
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 public class DemoSecurityController {
 
     @GetMapping("/api/protected/ping")

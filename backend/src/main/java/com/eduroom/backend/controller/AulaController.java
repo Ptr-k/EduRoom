@@ -14,7 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/aulas")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AulaController {
 
     @Autowired
